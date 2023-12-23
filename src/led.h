@@ -1,9 +1,8 @@
-//delete this line. this line was just to test editing
 #pragma once
 
 #include <FastLED.h>
-#include "music.h"
 #include "api.h"
+#include "music.h"
 
 #define NUM_LEDS          53
 #define LED_PIN           7
@@ -34,8 +33,6 @@ CHSV ledsHSV[NUM_LEDS];
 
 Color cBuf(0,0,0);
 Color* cols;
-
-
 
 double dclamp(double d1)
 {
@@ -253,7 +250,7 @@ void update_leds()
 
   for(int i = 0; i < NUM_LEDS; i++)
   {
-    leds[i] = CRGB(250,255,0);
+    leds[i] = CRGB(0,255,0);
   }
   FastLED.show();
   return;

@@ -7,7 +7,7 @@ import datetime
 from datetime import datetime
 from datetime import timedelta
 from datetime import time
-arduino = serial.Serial(port='/dev/ttyACM0',   baudrate=9600, timeout=.1)
+arduino = serial.Serial(port='/dev/ttyAMA0',   baudrate=9600, timeout=.1)
 arduino.close()
 
 
