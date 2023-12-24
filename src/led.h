@@ -4,7 +4,7 @@
 #include "api.h"
 #include "music.h"
 
-#define NUM_LEDS          53
+#define NUM_LEDS          40
 #define LED_PIN           7
 #define MAX_COLORS        10
 #define MODE_RGB          1
@@ -85,6 +85,15 @@ void interpolate_color_HSV(double scalar, const Color &c1, const Color &c2, Colo
   res.s = c2.s * scalar + c1.s * (1 - scalar);
   res.v = c2.v * scalar + c1.v * (1 - scalar);
 
+}
+
+void clear_LEDS()
+{
+    for(int i = 0; i < NUM_LEDS; i ++)
+    {
+        leds[i] = CRGB(0,0,0);
+    }
+    FastLED.show();
 }
 
 void offset_to_color(const Color *colorsp, int colors_size, double offset, Color &res, void (*interpolation_func)(double, const Color&, const Color&, Color&))
@@ -247,13 +256,7 @@ void update_leds()
   {
     activate_timer();
   }
-
-  for(int i = 0; i < NUM_LEDS; i++)
-  {
-    leds[i] = CRGB(0,255,0);
-  }
-  FastLED.show();
-  return;
+ return;
 
   if(!_enabled || music_is_active())
   {
@@ -283,8 +286,6 @@ void update_leds()
     
   }
 
-
-      
 
   FastLED.show();
 }
@@ -336,7 +337,7 @@ void init_LEDS(double max_brightness)
   {
     for(int i = 0; i < NUM_LEDS; i ++)
     {
-      leds[i] = CHSV(128,255,255);
+      leds[i] = CHSV(128,5,255);
 
     }
   }  

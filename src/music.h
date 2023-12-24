@@ -65,9 +65,7 @@ bool music_is_active()
 void apply_fft_update()//gets called when buffers are filled
 {
     unsigned long start = millis();
-    apply_fft();
-    Serial.print("time: ");
-    Serial.println(millis() - start);
+    /*apply_fft();
 
     double low_sum = 0;
 
@@ -82,12 +80,21 @@ void apply_fft_update()//gets called when buffers are filled
 
     }
     FastLED.show(); 
+    */
 
+    for(int i = 0; i < rolavgvol;   i ++)
+    {
+      led_ptr[i] = CRGB(0,0,100);
+    }
+    for(int i = (int)(rolavgvol); i < MAX_LEDS; i++)
+    {
+        led_ptr[i] = CRGB(0,0,0);
+    }
+    FastLED.show();
 }
 
 void update_vol(double vol)
 {
-
 
     currvol = vol;
     last_update = millis();
@@ -95,18 +102,6 @@ void update_vol(double vol)
     rolavgvol = rolavgvol * (1- rolavgweight) + rolavgweight * currvol;
 
 
-    //fill buffer
-    vReal[bufPtr] =  rolavgvol;
-    vImag[bufPtr] = 0; 
-    bufPtr ++;
-    if(bufPtr >= samples)
-    {   
-        apply_fft_update();
-        bufPtr = 0;
-    }
-    //-----------
-
-   
-
-
+    apply_fft_update();
+    
 }

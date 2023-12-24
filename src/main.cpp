@@ -14,17 +14,17 @@
 #define CMD_SET_TIMER     'T'
 #define CMD_MUSIC         'V'
 
-double offset_speed = 0.01;
+double offset_speed = 0.1;
+
+bool cleared = false;
 
 void setup() 
 {
   Serial.begin(9600);
   delay(100);
   init_LEDS(MAX_BRIGHTNESS);
-
   while(Serial.available())
     Serial.read();
-
 }
 void cmd_switch()
 {
@@ -47,9 +47,11 @@ void handle_serial()
   size_t bytesRead = 0;
   char cmd = "";
   int av = Serial.available();
- 
+
+  
   if (av)
   {
+    //clear_LEDS();
     cmd = Serial.read();
     switch(cmd)
     {
@@ -83,7 +85,9 @@ void handle_serial()
         bytesRead = Serial.readBytes((char *)&os, sizeof(struct offset_struct));
         if(bytesRead == sizeof(struct offset_struct))
         {
-          update_music((double)os.amp);
+           update_music((double)os.amp);
+           Serial.print("Read value:");
+           Serial.println(os.amp);
         }
       }
       break;
@@ -152,8 +156,7 @@ void handle_serial()
 void loop()
 {
 
-  //handle_serial();
+  handle_serial();
   offset += offset_speed;
-  update_leds();
-
+  //update_leds();
 }

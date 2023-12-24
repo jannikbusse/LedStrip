@@ -7,8 +7,8 @@ import datetime
 from datetime import datetime
 from datetime import timedelta
 from datetime import time
-arduino = serial.Serial(port='/dev/ttyAMA0',   baudrate=9600, timeout=.1)
-arduino.close()
+arduino = serial.Serial(port='/dev/ttyUSB0',   baudrate=9600, timeout=.1)
+#arduino.close()
 
 
 
@@ -19,7 +19,7 @@ arduino.close()
 def is_winter_time():
     return True
 
-UDP_IP = "192.168.2.65"
+UDP_IP = "192.168.178.114"
 UDP_PORT = 1234
 
 def parse_msg(msg, raw):
@@ -32,9 +32,9 @@ def parse_msg(msg, raw):
         arduino.write(struct.pack('=bf', ord('O'), float(msg[1:])/1000.0))
         arduino.close()
     if msg[0:1] == "V":
-        arduino.open()
+        #arduino.open()
         arduino.write(struct.pack('=bf', ord('V'), float(msg[1:])))
-        arduino.close()
+        #arduino.close()
     if msg[0:1] == "T":
         arduino.open()
         #arduino.write(struct.pack('=bf', ord('T'), float(msg[1:]))
@@ -52,8 +52,7 @@ def parse_msg(msg, raw):
         dy = timedelta(days=1)
         if(delta.total_seconds() < 0):
             print("lala")
-            delta = delta +dy
-        
+            delta = delta +dy 
         print(int(delta.total_seconds()))
         arduino.write(struct.pack('=bL', ord('T'), int(delta.total_seconds())))
         arduino.close()
@@ -82,7 +81,5 @@ with socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as sock:
     sock.bind((UDP_IP, UDP_PORT))
     while True:
         data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
-        print(str(data, "utf-8"))
         parse_msg(str(data, "utf-8"), data)
-
 sock.close()
